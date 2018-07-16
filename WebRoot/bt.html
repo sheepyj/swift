@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="GBK">
+    <title>第一个 Highcharts 图表</title>
+    <script src="http://cdn.hcharts.cn/highcharts/highcharts.js"></script>
+     <script src="https://img.hcharts.cn/highcharts/highcharts.js"></script>
+        <script src="https://img.hcharts.cn/highcharts/modules/exporting.js"></script>
+        <script src="https://img.hcharts.cn/highcharts-plugins/highcharts-zh_CN.js"></script>
+</head>
+<body>
+    <!-- 图表容器 DOM -->
+    <div id="container1" style="width: 600px;height:400px;"></div>
+    <div id="container2" style="min-width:400px;height:400px"></div>
+    <!-- 引入 highcharts.js -->
+    
+    <script>
+        // 图表配置
+        var options = {
+            chart: {
+                type: 'bar'                          //指定图表的类型，默认是折线图（line）
+            },
+            title: {
+                text: '我的第一个图表'                 // 标题
+            },
+            xAxis: {
+                categories: ['苹果', '香蕉', '橙子']   // x 轴分类
+            },
+            yAxis: {
+                title: {
+                    text: '吃水果个数'                // y 轴标题
+                }
+            },
+            series: [{                              // 数据列
+                name: '小明',                        // 数据列名
+                data: [1, 0, 4]                     // 数据
+            }, {
+                name: '小红',
+                data: [5, 7, 3]
+            }]
+        };
+        // 图表初始化函数
+        var chart = Highcharts.chart('container1', options);
+    </script>
+    <script>
+           var  chart = Highcharts.chart('container2', {
+		chart: {
+				plotBackgroundColor: null,
+				plotBorderWidth: null,
+				plotShadow: false
+		},
+		title: {
+				text: '扇区突出演示'
+		},
+		tooltip: {
+				headerFormat: '{series.name}<br>',
+				pointFormat: '{point.name}: <b>{point.percentage:.1f}%</b>'
+		},
+		plotOptions: {
+				pie: {
+						allowPointSelect: true,
+						cursor: 'pointer',
+						dataLabels: {
+								enabled: true,
+								format: '<b>{point.name}</b>: {point.percentage:.1f} %',
+								style: {
+										color: (Highcharts.theme && Highcharts.theme.contrastTextColor) || 'black'
+								}
+						},
+						states: {
+								hover: {
+										enabled: false
+								}  
+						},
+						slicedOffset: 20,         // 突出间距
+						point: {                  // 每个扇区是数据点对象，所以事件应该写在 point 下面
+								events: {
+										// 鼠标滑过是，突出当前扇区
+										mouseOver: function() {
+												this.slice();
+										},
+										// 鼠标移出时，收回突出显示
+										mouseOut: function() {
+												this.slice();
+										},
+										// 默认是点击突出，这里屏蔽掉
+										click: function() {
+												return false;
+										}
+								}
+						}
+				}
+		},
+		series: [{
+				type: 'pie',
+				name: '浏览器访问量占比',
+				data: [
+						['Firefox',   45.0],
+						['IE',       26.8],
+						{
+								name: 'Chrome',
+								y: 12.8,
+								sliced: true, // 突出显示这个点（扇区），用于强调。
+						},
+						['Safari',    8.5],
+						['Opera',     6.2],
+						['其他',   0.7]
+				]
+		}]
+}); 
+        </script>
+</body>
+</html>
